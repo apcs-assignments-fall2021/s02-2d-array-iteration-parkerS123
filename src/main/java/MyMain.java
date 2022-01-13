@@ -10,7 +10,7 @@ public class MyMain {
         String string_holder = arr[0];
         for (int i = 0; i < arr.length - 1; i++){
             if (string_holder.compareTo(arr[i+1]) > 0){
-               string_holder = arr[i];
+               //string_holder = arr[i];
             }
             else if (string_holder.compareTo(arr[i+1]) < 0){
                 string_holder = arr[i+1];
@@ -48,7 +48,7 @@ public class MyMain {
         for (int row = 0; row < mat.length; row++){
             for (int col2 = 0; col2 < mat[0].length; col2++){
                 if (col2 == col){
-                    if (mat[row][col].equals("apple")){
+                    if (mat[row][col].equals("apple") || mat[row][col].contains("apple")){
                         counter++;
                     }
                 }
@@ -64,8 +64,18 @@ public class MyMain {
     // Hint: use your previous method!
     // Hint 2: you might need to loop through the columns!
     public static int findMostAppleColumn(String[][] mat) {
-        // YOUR CODE HERE
-        return -1;
+        int mostapple = 0;
+        int mostappleholder = 0;
+        int col_holder = 0;
+        for (int i = 0; i < mat[0].length; i++){ // set most apple back to zero each run through
+            mostapple = appleCounter(mat, i);
+            if (mostapple > mostappleholder) {
+                col_holder = i;
+                mostappleholder = mostapple;
+            }
+        }
+
+        return col_holder;
     }
 
 
@@ -93,8 +103,38 @@ public class MyMain {
     //       from top to bottom
 
     public static int[][] pascal(int height) {
-        // YOUR CODE HERE
-        return null;
+        int[][] mat = new int[height][height];
+
+        for (int col1 = 0; col1 < height; col1++){ // sets first column to 1's
+            mat[col1][0] = 1;
+        }
+        for (int i = 0; i < height; i++){ // sets diagonals to 1's
+            mat[i][i] = 1;
+        }
+
+// math loop that checks the row above and one to the left and gets sum
+        for (int row = 0; row < height; row++){
+            for (int col = 0; col < height; col++){
+                if (col > 0 && row > 0){
+                    mat[row][col] = mat[row - 1][col] + mat[row - 1][col - 1];
+
+                }
+                else {
+                    mat[row][col] = 0; // call the next 2 loops again to make sure they aren't 0's
+                    for (int col1 = 0; col1 < height; col1++){ // sets first column to 1's
+                        mat[col1][0] = 1;
+                    }
+                    for (int i = 0; i < height; i++){ // sets diagonals to 1's
+                        mat[i][i] = 1;
+                    }
+                }
+            }
+        }
+
+
+
+
+        return mat;
     }
 
 
@@ -130,8 +170,44 @@ public class MyMain {
     // * do you see any pattern for the row and col indexes for a diagonal?
     // * can you use a for loop that goes through that pattern?
     public static boolean isMagic(int[][] mat) {
-        // YOUR CODE HERE
-        return false;
+        int firstnumcheck = 0;
+        int num = 0;
+
+        // finds initial number of sum of first column to check against all other ones
+        for (int row1 = 0; row1 < mat.length; row1++){
+            firstnumcheck = firstnumcheck + mat[row1][0];
+        }
+
+// loops through all rows and checks if equal to firstnumcheck
+        for (int row = 0; row < mat.length; row++) {
+            if (row > 0 && firstnumcheck != num) {
+                return false;
+            }
+            num = 0;
+            for (int col = 0; col < mat[0].length; col++) {
+                num = num + mat[row][col];
+            }
+        }
+
+        // checks the diagonals
+        num = 0;
+        for (int i = 0; i < mat.length; i++){
+            num = num + mat[i][i];
+        }
+        if (firstnumcheck != num){
+            return false;
+        }
+        num = 0;
+        int colholder = 0;
+        for (int j = mat.length - 1; j > 0; j--){
+            num = num + mat[j][colholder];
+            colholder++;
+        }
+        if (firstnumcheck != num){
+            return false;
+        }
+
+        return true;
     }
 
 
