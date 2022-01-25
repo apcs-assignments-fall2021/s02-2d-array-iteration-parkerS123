@@ -178,14 +178,28 @@ public class MyMain {
             firstnumcheck = firstnumcheck + mat[row1][0];
         }
 
-// loops through all rows and checks if equal to firstnumcheck
+        // loops through all rows and checks if equal to firstnumcheck
         for (int row = 0; row < mat.length; row++) {
-            if (row > 0 && firstnumcheck != num) {
-                return false;
-            }
             num = 0;
             for (int col = 0; col < mat[0].length; col++) {
                 num = num + mat[row][col];
+            }
+
+            if (firstnumcheck != num) {
+                return false;
+            }
+        }
+
+        // check columns
+
+        for (int col = 0; col < mat[0].length; col++) {
+            num = 0;
+            for (int row = 0; row < mat.length; row++) {
+                num = num + mat[row][col];
+            }
+
+            if (firstnumcheck != num) {
+                return false;
             }
         }
 
@@ -197,15 +211,19 @@ public class MyMain {
         if (firstnumcheck != num){
             return false;
         }
+
+
         num = 0;
         int colholder = 0;
-        for (int j = mat.length - 1; j > 0; j--){
+        for (int j = mat.length - 1; j >= 0; j--){
             num = num + mat[j][colholder];
             colholder++;
         }
+
         if (firstnumcheck != num){
             return false;
         }
+
 
         return true;
     }
